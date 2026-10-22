@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caja Registradora - Restaurante</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 32px 16px; background: #f4f6f9; color: #263238;
+        }
+        .contenedor {
+            max-width: 760px; background: white; padding: 28px;
+            border-radius: 16px; box-shadow: 0 8px 28px rgba(0,0,0,.09);
+            margin: 0 auto 24px;
+        }
+        h1, h2, h3 { text-align: center; margin-top: 0; }
+        h1 { color: #c0392b; font-size: 28px; }
+        h2 { color: #c0392b; }
+        h3 { color: #34495e; margin-top: 30px; }
+        .seccion { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px dashed #dce1e5; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; }
+        select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccd3da; font-size: 15px; background: #fff; }
+        .opciones-inline { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+        .opciones-inline label { display: inline; margin: 0; font-weight: 400; }
+        .checkbox-group { display: flex; flex-direction: column; gap: 12px; }
+        .checkbox-item { display: flex; align-items: center; gap: 9px; }
+        .checkbox-item label { margin: 0; font-weight: 400; }
+        input { accent-color: #c0392b; }
+        button {
+            padding: 12px 16px; background: #239b56; color: white; border: 0;
+            border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: 700;
+            transition: filter .2s; 
+        }
+        button:hover { filter: brightness(.92); }
+        .btn-calcular { width: 100%; }
+        .btn-azul { background: #2471a3; }
+        .btn-rojo { background: #c0392b; }
+        #reciboRespuesta {
+            margin-top: 22px; padding: 18px; border-radius: 8px; display: none;
+            background: #fff8e1; border: 1px solid #f5d778; line-height: 1.8;
+        }
+        #tablaHistorial { display: none; margin-top: 18px; }
+        .item-pedido {
+            padding: 14px; margin: 12px 0; background: #f8f9fa;
+            border: 1px solid #e2e6ea; border-left: 4px solid #2471a3;
+            border-radius: 8px; line-height: 1.7; overflow-wrap: anywhere;
+        }
+        .resumen-caja { padding: 14px; border-radius: 8px; background: #eafaf1; color: #196f3d; }
+        .nota { text-align: center; color: #6c757d; font-size: 13px; margin-top: 18px; }
+        @media (max-width: 520px) {
+            .contenedor { padding: 20px; }
+            .opciones-inline { gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <main class="contenedor">
+        <h1>🍽️ Restaurante</h1>
+        <h2>Prepara tu pedido</h2>
+
+        <form id="formularioRestaurante">
+            <div class="seccion">
+                <label for="platoPrincipal">Elige tu plato principal:</label>
+                <select id="platoPrincipal" required>
+                    <option value="pizza">Pizza Familiar — $12.00</option>
+                    <option value="hamburguesa">Hamburguesa con Queso — $7.50</option>
+                </select>
+            </div>
+
+            <div class="seccion">
+                <label>Tamaño de la bebida:</label>
+                <div class="opciones-inline">
+                    <input type="radio" id="bebidaP" name="tamanoBebida" value="pequena" checked>
+                    <label for="bebidaP">Pequeña (+$1.00)</label>
+                    <input type="radio" id="bebidaM" name="tamanoBebida" value="mediana">
+                    <label for="bebidaM">Mediana (+$1.50)</label>
+                    <input type="radio" id="bebidaG" name="tamanoBebida" value="grande">
+                    <label for="bebidaG">Grande (+$2.00)</label>
+                </div>
+            </div>
+
+            <div class="seccion">
+                <label>¿Deseas agregar extras?</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="extraPapas" value="papas">
+                        <label for="extraPapas">Papas fritas (+$2.50)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="extraHelado" value="helado">
+                        <label for="extraHelado">Helado de vainilla (+$1.80)</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-calcular" type="submit">🧾 Calcular cuenta y guardar pedido</button>
+        </form>
+
+        <div id="reciboRespuesta" aria-live="polite"></div>
+
+        <section aria-labelledby="tituloAdministracion">
+            <h3 id="tituloAdministracion">📊 Administración de ventas</h3>
+            <div class="opciones-inline">
+                <button type="button" id="btnVerHistorial" class="btn-azul">📋 Ver historial</button>
+                <button type="button" id="btnBorrarHistorial" class="btn-rojo">🗑️ Limpiar base de datos</button>
+            </div>
+            <div id="tablaHistorial"></div>
+        </section>
+        <p class="nota">Los pedidos se guardan localmente en este navegador.</p>
+    </main>
+
+    <!-- Cargar Dexie primero; después, el código de la aplicación. -->
+    <script src="https://unpkg.com/dexie@4/dist/dexie.min.js"></script>
+    <script src="restaurante.js"></script>
+</body>
+</html>
